@@ -26,7 +26,9 @@
 </template>
 
 <script>
-import api from '../services/apiServices'
+import { EventBus } from '../../main'
+
+import api from '../../services/apiServices'
 
 export default {
     data() {
@@ -36,37 +38,43 @@ export default {
                     name: 'strenght',
                     abvName: 'STR',
                     score: 0,
-                    bonus: 0
+                    racialBonus: 0,
+                    otherBonus: 0
                 }, 
                 {
                     name: 'dexterity',
                     abvName: 'DEX',
                     score: 0,
-                    bonus: 0
+                    racialBonus: 0,
+                    otherBonus: 0
                 }, 
                 {
                     name: 'constitution',
                     abvName: 'CON',
                     score: 0,
-                    bonus: 0
+                    racialBonus: 0,
+                    otherBonus: 0
                 },
                 {
                     name: 'intelligence',
                     abvName: 'INT',
                     score: 0,
-                    bonus: 0
+                    racialBonus: 0,
+                    otherBonus: 0
                 },
                 {
                     name: 'wisdom',
                     abvName: 'WIS',
                     score: 0,
-                    bonus: 0
+                    racialBonus: 0,
+                    otherBonus: 0
                 },
                 {
                     name: 'charisma',
                     abvName: 'CHA',
                     score: 0,
-                    bonus: 0
+                    racialBonus: 0,
+                    otherBonus: 0
                 }
             ]
             
@@ -75,6 +83,10 @@ export default {
     created() {
         let vm = this
         api.getAbilityScores(vm)
+
+        EventBus.$on('randomCharacterLoaded', (info) => {
+            this.abilityScoreInfo = info.abilityScores
+        })
     },
     methods: {
         abilityScoreModifier(score) {

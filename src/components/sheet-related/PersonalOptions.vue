@@ -6,20 +6,16 @@
             </div>
             <div class="panel-body">
                 <div class="form-group">
-                    <label for="charName">Character Name</label>
-                    <input v-model="characterInfo.name" type="text" class="form-control" id="charName">
+                    <style-input :model="characterInfo.name" inputName="Name"></style-input>
                 </div>
                 <div class="form-group">
-                    <label for="charRace">Race</label>
-                    <select v-model="characterInfo.race" class="form-control" id="charRace">
-                        <option v-for="race in races">{{ race.name }}</option>
-                    </select>
+                    <style-input :model="characterInfo.level" inputName="Level"></style-input>
                 </div>
                 <div class="form-group">
-                    <label for="charClass">Class</label>
-                    <select v-model="characterInfo.class" class="form-control" id="charClass">
-                        <option v-for="role in classes">{{ role.name }}</option>
-                    </select>
+                    <style-select :model="characterInfo.race" inputName="Race" :items="races"></style-select>
+                </div>
+                <div class="form-group">
+                    <style-select :model="characterInfo.class" inputName="Class" :items="classes"></style-select>
                 </div>
                 <div class="form-group">
                     <label for="charAlignment">Alignment</label>
@@ -33,7 +29,12 @@
 </template>
 
 <script>
-import api from '../services/apiServices'
+import { EventBus } from '../../main'
+
+import api from '../../services/apiServices'
+
+import StyleInput from '../layout-related/StyleInput.vue'
+import StyleSelect from '../layout-related/StyleSelect.vue'
 
 export default {
     data() {
@@ -45,7 +46,9 @@ export default {
                 level: '',
                 name: '',
                 player: '',
-                alignment: ''
+                alignment: '',
+                race:'',
+                class:''
             }
         }
     },
@@ -53,19 +56,25 @@ export default {
         let vm = this
         api.getRaces(vm)
         api.getClasses(vm)
+        EventBus.$on('NameValueUpdated', (data) => {
+            this.characterInfo.name = data
+        })
+        EventBus.$on('LevelValueUpdated', (data) => {
+            this.characterInfo.level = data
+        })
+        EventBus.$on('RaceValueUpdated', (data) => {
+            this.characterInfo.race = data
+        })
+        EventBus.$on('randomCharacterLoaded', (characterInformation) => {
+            this.characterInfo = characterInformation.characterInfo
+        })
+    },
+    components: {
+        StyleInput,
+        StyleSelect
     }
 }
 </script>
 
 <style>
-@media only screen and (min-width : 768px) {
-    .is-table-row {
-        display: table;
-    }
-    .is-table-row [class*="col-"] {
-        float: none;
-        display: table-cell;
-        vertical-align: top;
-    }
-}
 </style>

@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import CharacterForm from './components/CharacterForm.vue'
+import CharacterForm from './components/sheet-related/CharacterForm.vue'
 
 export default {
   name: 'app',

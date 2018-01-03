@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import api from '../services/apiServices'
+import api from '../../services/apiServices'
 
 export default {
     props: ['player'],
